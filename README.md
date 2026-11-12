@@ -59,5 +59,3 @@
 ├── scripts/       # scripts (sauvegarde, empreintes, etc.)
 └── config/        # extraits de fichiers de configuration (sans secrets)
 ```
-
-> ⚠️ Aucun mot de passe, clé privée ni passphrase ne doit être poussé dans ce dépôt.
