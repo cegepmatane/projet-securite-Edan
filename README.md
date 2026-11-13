@@ -46,9 +46,9 @@
 
 ## Vidéos de démonstration
 
-- Partie 1 : présentation et VPS : <lien>
-- Partie 2 : Knox : <lien>
-- Partie 3 : Canary : <lien>
+- Partie 1 : présentation et VPS : https://youtu.be/CR-gNQk5SQQ
+- Partie 2 : Knox : https://youtu.be/jd0dl2mKq8s
+- Partie 3 : Canary : https://youtu.be/ZRdFsb67uMs
 
 ## Arborescence du dépôt
 
