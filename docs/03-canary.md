@@ -63,7 +63,7 @@ c.update({
     "mysql.banner": "5.7.42-0ubuntu0.18.04.1",
     "portscan.enabled": True,
     "portscan.logfile": "/var/log/kern.log",
-    "portscan.ignore_localhost": False,
+    "portscan.ignore_localhost": True,
 })
 c["logger"]["kwargs"]["handlers"]["file"]["filename"] = "/var/log/opencanary.log"
 json.dump(c, open(p, "w"), indent=4)
@@ -84,7 +84,7 @@ Extrait de la configuration obtenue :
 "mysql.banner": "5.7.42-0ubuntu0.18.04.1",
 "portscan.enabled": true,
 "portscan.logfile": "/var/log/kern.log",
-"portscan.ignore_localhost": false,
+"portscan.ignore_localhost": true,
 ```
 
 | Réglage | Rôle |
@@ -194,3 +194,9 @@ Exemple d'alerte de connexion Web :
 | Page Web : « Processing Failed » | L'apparence `basicLogin` du paquet pip n'a pas de `redirect.html` (`FileNotFoundError`) | `http.skin = "nasLogin"`, qui est complète |
 | Le script de courriel ne laissait rien taper (`EOFError`) | Avec `python3 - <<EOF`, l'entrée standard est le script lui-même, donc `input()` ne lit rien | Écrire le script dans un fichier, puis l'exécuter |
 | `iptables -L` ne montre pas les règles `canaryfw` | Règles créées avec `iptables-legacy` | `sudo iptables-legacy -t mangle -L PREROUTING -n` |
+
+## 7. Ajustement après la mise en service
+
+`portscan.ignore_localhost` était à `false` pour permettre les tests depuis Canary lui-même. Une fois en service, il a été mis à `true` : une alerte `127.0.0.1 → 127.0.0.1:27500` (`IN: lo`) venait d'un programme local de Canary, et non du réseau.
+
+Alerte réelle observée : `10.1.106.26 → 10.1.106.39:53317`, un seul paquet SYN, TTL 128 (Windows). Le port 53317 est celui de l'application LocalSend, qui sonde le réseau local pour trouver des appareils. Ce n'est pas malveillant, mais le pot de miel a bien détecté et signalé une machine venue fouiller.
